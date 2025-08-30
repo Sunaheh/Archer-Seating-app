@@ -59,17 +59,11 @@
   #next {
     font-size: 5.5vh;
     color: #333;
-    animation: float 3s infinite ease-in-out;
   }
 
   @keyframes pulse {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.1); }
-  }
-
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
   }
 </style>
 </head>
@@ -82,13 +76,16 @@
 
 <script>
   const kids = ["Mia", "Sienna"];
-  const startDate = new Date(2025, 7, 29); // Aug 29, 2025 = Mia → so Aug 31 = Sienna
+  // Aug 30, 2025 = Mia → Aug 31, 2025 = Sienna
+  const startDate = new Date(2025, 7, 30); 
+
   const kidNameEl = document.getElementById("kid-name");
   const bodyEl = document.body;
 
   function updateKid() {
     const today = new Date();
-    const localDate = new Date(today.getFullYear(), today.getMonth(), today.getDate()); 
+    // Local midnight version of today
+    const localDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
     const diffDays = Math.floor((localDate - startDate) / (1000*60*60*24));
     const kidToday = kids[(diffDays % kids.length + kids.length) % kids.length]; 
     kidNameEl.textContent = kidToday;
