@@ -61,6 +61,15 @@
     color: #333;
   }
 
+  #debug {
+    position: absolute;
+    bottom: 5px;
+    font-size: 1.5vh;
+    color: gray;
+    opacity: 0.7;
+    cursor: pointer;
+  }
+
   @keyframes pulse {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.1); }
@@ -72,6 +81,7 @@
   <p id="today" class="line">Today</p>
   <p id="kid-name" class="line"></p>
   <p id="next" class="line">gets to sit next to Archer! 🪑👶</p>
+  <p id="debug"></p>
 </div>
 
 <script>
@@ -80,11 +90,11 @@
   const startDate = new Date(2025, 7, 30); 
 
   const kidNameEl = document.getElementById("kid-name");
+  const debugEl = document.getElementById("debug");
   const bodyEl = document.body;
 
   function updateKid() {
     const today = new Date();
-    // Local midnight version of today
     const localDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
     const diffDays = Math.floor((localDate - startDate) / (1000*60*60*24));
     const kidToday = kids[(diffDays % kids.length + kids.length) % kids.length]; 
@@ -95,18 +105,14 @@
     } else {
       bodyEl.style.background = "linear-gradient(135deg, #cce0ff, #99c2ff)";
     }
+
+    // Debug info
+    debugEl.textContent = `Debug: Today is ${localDate.toISOString().split('T')[0]} → ${kidToday}`;
   }
 
   updateKid();
 
-  // Confetti burst on page load
-  confetti({
-    particleCount: 100,
-    spread: 70,
-    origin: { y: 0.6 }
-  });
-
-  // Auto-update at midnight
+  // Confetti burst at midnight
   function msUntilMidnight() {
     const now = new Date();
     const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
@@ -118,6 +124,15 @@
     setInterval(updateKid, 24*60*60*1000);
     confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
   }, msUntilMidnight());
+
+  // Toggle debug visibility on tap
+  debugEl.addEventListener("click", () => {
+    if (debugEl.style.display === "none") {
+      debugEl.style.display = "block";
+    } else {
+      debugEl.style.display = "none";
+    }
+  });
 </script>
 </body>
 </html>
