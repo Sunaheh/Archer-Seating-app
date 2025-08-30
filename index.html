@@ -82,17 +82,17 @@
 
 <script>
   const kids = ["Mia", "Sienna"];
-  const startDate = new Date("2025-08-30"); // first day for Mia
+  const startDate = new Date(2025, 7, 29); // Aug 29, 2025 = Mia → so Aug 31 = Sienna
   const kidNameEl = document.getElementById("kid-name");
   const bodyEl = document.body;
 
   function updateKid() {
     const today = new Date();
-    const diffDays = Math.floor((today - startDate) / (1000*60*60*24));
-    const kidToday = kids[diffDays % kids.length];
+    const localDate = new Date(today.getFullYear(), today.getMonth(), today.getDate()); 
+    const diffDays = Math.floor((localDate - startDate) / (1000*60*60*24));
+    const kidToday = kids[(diffDays % kids.length + kids.length) % kids.length]; 
     kidNameEl.textContent = kidToday;
 
-    // Gradient background per kid
     if (kidToday === "Mia") {
       bodyEl.style.background = "linear-gradient(135deg, #ffdde1, #ffc3c3)";
     } else {
@@ -100,7 +100,6 @@
     }
   }
 
-  // Initial update
   updateKid();
 
   // Confetti burst on page load
@@ -120,6 +119,7 @@
   setTimeout(function() {
     updateKid();
     setInterval(updateKid, 24*60*60*1000);
+    confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
   }, msUntilMidnight());
 </script>
 </body>
