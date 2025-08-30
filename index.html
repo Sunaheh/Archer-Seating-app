@@ -5,10 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Archer Seating</title>
 
-<!-- Google Font -->
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
-
-<!-- Canvas Confetti library -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <style>
@@ -31,7 +28,7 @@
     align-items: center;
     height: 100vh;
     width: 100vw;
-    padding: 5vh 5vw;
+    padding: 5vh 5vw 8vh; /* extra bottom padding for debug line */
     box-sizing: border-box;
     position: relative;
     z-index: 1;
@@ -68,6 +65,7 @@
     color: gray;
     opacity: 0.7;
     cursor: pointer;
+    display: block; /* ensure visible by default */
   }
 
   @keyframes pulse {
@@ -86,8 +84,7 @@
 
 <script>
   const kids = ["Mia", "Sienna"];
-  // Aug 30, 2025 = Mia → Aug 31, 2025 = Sienna
-  const startDate = new Date(2025, 7, 30); 
+  const startDate = new Date(2025, 7, 30); // Aug 30 = Mia → Aug 31 = Sienna
 
   const kidNameEl = document.getElementById("kid-name");
   const debugEl = document.getElementById("debug");
@@ -100,19 +97,20 @@
     const kidToday = kids[(diffDays % kids.length + kids.length) % kids.length]; 
     kidNameEl.textContent = kidToday;
 
-    if (kidToday === "Mia") {
-      bodyEl.style.background = "linear-gradient(135deg, #ffdde1, #ffc3c3)";
-    } else {
-      bodyEl.style.background = "linear-gradient(135deg, #cce0ff, #99c2ff)";
-    }
+    bodyEl.style.background = kidToday === "Mia"
+      ? "linear-gradient(135deg, #ffdde1, #ffc3c3)"
+      : "linear-gradient(135deg, #cce0ff, #99c2ff)";
 
-    // Debug info
+    // Debug line
     debugEl.textContent = `Debug: Today is ${localDate.toISOString().split('T')[0]} → ${kidToday}`;
+    debugEl.style.display = "block";
+
+    // Confetti on every page load
+    confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
   }
 
   updateKid();
 
-  // Confetti burst at midnight
   function msUntilMidnight() {
     const now = new Date();
     const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
@@ -125,13 +123,9 @@
     confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
   }, msUntilMidnight());
 
-  // Toggle debug visibility on tap
+  // Toggle debug line
   debugEl.addEventListener("click", () => {
-    if (debugEl.style.display === "none") {
-      debugEl.style.display = "block";
-    } else {
-      debugEl.style.display = "none";
-    }
+    debugEl.style.display = debugEl.style.display === "none" ? "block" : "none";
   });
 </script>
 </body>
