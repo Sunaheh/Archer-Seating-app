@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Archer Seating</title>
+
+<!-- Google Font for fun -->
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+
+<style>
+  html, body {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fdf6e3;
+    text-align: center;
+    transition: background-color 1s ease; /* smooth fade */
+  }
+
+  #container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    padding: 5vh 5vw;
+    box-sizing: border-box;
+  }
+
+  .line {
+    margin: 0;
+    padding: 0;
+  }
+
+  #today {
+    font-size: 8vw;
+    color: #333;
+  }
+
+  #kid-name {
+    font-size: 15vw; /* very big */
+    font-weight: bold;
+    color: #2c3e50;
+    font-family: 'Fredoka One', cursive;
+    animation: pulse 2s infinite;
+  }
+
+  #next {
+    font-size: 6vw;
+    color: #333;
+  }
+
+  /* Pulse animation */
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+</style>
+</head>
+<body>
+<div id="container">
+  <p id="today" class="line">Today</p>
+  <p id="kid-name" class="line"></p>
+  <p id="next" class="line">gets to sit next to Archer! 🪑👶</p>
+</div>
+
+<script>
+  const kids = ["Mia", "Sienna"];
+  const startDate = new Date("2025-08-30"); // first day for Mia
+  const today = new Date();
+  const diffDays = Math.floor((today - startDate) / (1000*60*60*24));
+  const kidToday = kids[diffDays % kids.length];
+
+  document.getElementById("kid-name").textContent = kidToday;
+
+  // Change background color per kid
+  const container = document.getElementById("container");
+  if (kidToday === "Mia") {
+    document.body.style.backgroundColor = "#ffdde1"; // soft pink
+  } else {
+    document.body.style.backgroundColor = "#cce0ff"; // soft blue
+  }
+</script>
+</body>
+</html>
